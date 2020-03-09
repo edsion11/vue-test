@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>删减操作</title>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <!-- 最新版本的 Bootstrap 核心 CSS 文件 
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>删减操作</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<!-- 最新版本的 Bootstrap 核心 CSS 文件 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
 <!-- 可选的 Bootstrap 主题文件（一般不用引入） --
@@ -13,7 +14,8 @@
 
 <!-- 最新的 Bootstrap 核心 JavaScript 文件 --
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+		integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<style>
 		/* .triangle{
 			width:0px;
@@ -25,8 +27,9 @@
 		} */
 	</style>
 </head>
+
 <body>
-    <div id="app">
+	<div id="app">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
 				<h3 class="panel-title">
@@ -40,124 +43,138 @@
 				</label>
 				<label>
 					Name:
-					<input type="text" v-model="name">
+					<input type="text" v-model="name" @keyup.en="add">
 				</label>
 				<button class="btn btn-primary" @click="add()">添加</button>
 				<label>
 					搜索名称关键字：
 					<input type="text" class="form-control" v-model="keywords">
 				</label>
-				</div>
 			</div>
-     <table class=" table table-bordered table-hover table-striped">
-         <thead>//表头
-           <tr>
-               <th>id</th>
-               <th>Name</th>
-               <th>Ctime</th>
-               <th>Operation</th>
-           </tr>
-         </thead>
-         <tbody>
-             <tr v-for="item in search(keywords)" :key="item.id">
-                 <td v-text="item.id"></td>
-                 <td v-text="item.name"></td>
-                 <td>{{item.ctime | dataformat('')}}</td>
-                 <td><a href="" @click.prevent="del(item.id)">删除</a></td>
-             </tr>
-         </tbody>
-     </table>
-    </div>
+		</div>
+		<table class=" table table-bordered table-hover table-striped">
+			<thead>//表头
+				<tr>
+					<th>id</th>
+					<th>Name</th>
+					<th>Ctime</th>
+					<th>Operation</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr v-for="item in search(keywords)" :key="item.id">
+					<td v-text="item.id"></td>
+					<td v-text="item.name"></td>
+					<td>{{item.ctime | dataformat('')}}</td>
+					<td><a href="" @click.prevent="del(item.id)">删除</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 	<div class="triangle"></div>
 	<div id="app2">
-	    {{dt | dateformat('')}}	
+		{{dt | dateformat('')}}
 	</div>
-<script>
-	//全局过滤器，时间格式化 
-	Vue.filter('dataformat',function(dateStr,pattern){
-		//根据给定的时间字符串，得到特定的时间
-		var dt = new Date(dateStr)
-		var y = dt.getFullYear()
-		var m = dt.getMonth()+1
-		var d = dt.getDate()
-		if(pattern.toUpperCase()==='yyyy-mm-dd'){
-			return `${y}-${m}-${d}`
-			}
-			else{
+	<script>
+		//全局过滤器，时间格式化 
+		Vue.filter('dataformat', function (dateStr, pattern) {
+			//根据给定的时间字符串，得到特定的时间
+			var dt = new Date(dateStr)
+			var y = dt.getFullYear()
+			var m = dt.getMonth() + 1
+			var d = dt.getDate()
+			if (pattern.toUpperCase() === 'yyyy-mm-dd') {
+				return `${y}-${m}-${d}`
+			} else {
 				var hh = dt.getHours();
 				var mm = dt.getMinutes();
 				var ss = dt.getSeconds();
 				return `${y}-${m}-${d} ${hh}:${mm}:${ss}`
 			}
-	})
-    var vm = new Vue({
-        el:'#app',
-        data: {
-		   id:'',
-		   name:'',
-		   keywords:'',
-           list: [
-               { id: 1, name:'奔驰', ctime: new Date() },
-               { id: 2, name:'宝马', ctime: new Date() },
-               { id: 3, name:'法拉利', ctime: new Date() }
-        ]
-        },
-        methods:{
-			add(){
-				var car={id:this.id,name:this.name,ctime:new Date()}
-			    this.list.push(car)
+		})
+		var vm = new Vue({
+			el: '#app',
+			data: {
+				id: '',
+				name: '',
+				keywords: '',
+				list: [{
+						id: 1,
+						name: '奔驰',
+						ctime: new Date()
+					},
+					{
+						id: 2,
+						name: '宝马',
+						ctime: new Date()
+					},
+					{
+						id: 3,
+						name: '法拉利',
+						ctime: new Date()
+					}
+				]
 			},
-			del(id){
-				this.list.some((item,i)=>{
-					if(item.id==id){
-						this.list.splice(i,1)
-						return true;
+			methods: {
+				add() {
+					var car = {
+						id: this.id,
+						name: this.name,
+						ctime: new Date()
 					}
-				})
-			},
-			search(keywords){
-				/* 第一种方法-----------------------------------------------
-				var newlist=[]
-				this.list.forEach(item=>{
-					if(item.name.indexOf(keywords)!=-1){
-						newlist.push(item)
-					}
-				})
-				return newlist; -------------------------------------------*/
-				return this.list.filter(item=>{
-					if(item.name.includes(keywords)){
-						return item;
-					}
-				})
+					this.list.push(car)
+				},
+				del(id) {
+					this.list.some((item, i) => {
+						if (item.id == id) {
+							this.list.splice(i, 1)
+							return true;
+						}
+					})
+				},
+				search(keywords) {
+					/* 第一种方法-----------------------------------------------
+					var newlist=[]
+					this.list.forEach(item=>{
+						if(item.name.indexOf(keywords)!=-1){
+							newlist.push(item)
+						}
+					})
+					return newlist; -------------------------------------------*/
+					return this.list.filter(item => {
+						if (item.name.includes(keywords)) {
+							return item;
+						}
+					})
+				}
 			}
-        }
-    })
-	var vm2 = new Vue({
-		el:'#app2',
-		data:{
-			dt: new Date()
-		},
-		methods:{
-			
-		},
-		filters:{//定义私有过滤器  -- 过滤器名称和函数  名称相同时，优先调用私有过滤器
-			dateformat:function(dateStr,pattern){
-				var dt = new Date(dateStr)
-				var y = dt.getFullYear()
-				var m = dt.getMonth()+1
-				var d = dt.getDate()
-				if(pattern.toUpperCase()==='yyyy-mm-dd'){
-					return `${y}-${m}-${d}`
-					}
-					else{
+		})
+		var vm2 = new Vue({
+			el: '#app2',
+			data: {
+				dt: new Date()
+			},
+			methods: {
+
+			},
+			filters: { //定义私有过滤器  -- 过滤器名称和函数  名称相同时，优先调用私有过滤器
+				dateformat: function (dateStr, pattern) {
+					var dt = new Date(dateStr)
+					var y = dt.getFullYear()
+					var m = dt.getMonth() + 1
+					var d = dt.getDate()
+					if (pattern.toUpperCase() === 'yyyy-mm-dd') {
+						return `${y}-${m}-${d}`
+					} else {
 						var hh = dt.getHours();
 						var mm = dt.getMinutes();
-						var ss = dt.getSeconds().toString().padStart(2,'0');//padStart添加字符串
+						var ss = dt.getSeconds().toString().padStart(2, '0'); //padStart添加字符串
 						return `${y}-${m}-${d} ${hh}:${mm}:${ss} ~~~~~~`
 					}
-			},
-		}
-	})
-</script>
-</body> 
+				},
+			}
+		})
+	</script>
+</body>
+
 </html>
