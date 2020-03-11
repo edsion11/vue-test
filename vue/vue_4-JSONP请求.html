@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>vue-resource</title>
+    <script src="vue.js"></script>
+    <script src="../node_modules/vue-resource/dist/vue-resource.js"></script>
+  </head>
+  <body>
+    <div class="body">
+      <input type="button" value="get请求" @click="getinfo" />
+      <button @click="postinfo">post请求</button>
+      <input type="button" value="jsonp请求" @click="jsonpinfo" />
+    </div>
+    <script>
+      let vm = new Vue({
+        el: '.body',
+        data: {},
+        methods: {
+          getinfo() {
+            this.$http
+              .get('http://localhost:5500/vue_2.html')
+              .then(function(result) {
+                console.log(result)
+              })
+          },
+          postinfo() {
+            //接受表单格式：application/x-wwww-form-urlencoded，手动发起的post默认没有表单格式
+            this.$http
+              .post(
+                'http://localhost:5500/vue_1.html',
+                {},
+                { emulateJSON: true }
+              )
+              .then(result => {
+                console.log(result)
+              })
+          },
+          jsonpinfo() {
+            //由于刘浏览器安全性限制，不允许ajax访问协议不同，域名不同，端口号不同的数据接口，jsonp通过动态创建script标签的形式，只想数据接口的地址
+            //因为script不存在跨域的限制，这种方式叫做jsonp
+            //具体：
+            //先在客户端定义一个回调方法，预定义对数据的操作，再把这个回调方法的名称通过url传参的形式，提交到服务器端口
+            //服务器数据接口组织好要发送到客户端的数据，拿着客户端传过来的回调方法名称拼接出一个调用这个方法的字符串，发送给客户端去解析执行
+            //客户端拿到返回的字符串之后，当作script脚本去执行，这样就拿到jsonp的数据了
+            this.$http
+              .jsonp('http://localhost:5500/vue_3.html')
+              .then(result => {
+                console.log(result)
+              })
+          }
+        }
+      })
+    </script>
+  </body>
+</html>

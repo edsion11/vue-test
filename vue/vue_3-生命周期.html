@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>vue实例</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  </head>
+  <body>
+    <div id="app">
+      <input type="button" value="改变" @click="change" />
+      {{msg}}
+    </div>
+    <script>
+      var vm = new Vue({
+        el: '#app',
+        data: {
+          msg: 'hello'
+        },
+        methods: {
+          add() {
+            console.log('我是add')
+          },
+          change() {
+            this.msg = 'beforeUpdate'
+          }
+        },
+        beforeCreate() {
+          console.log(this.msg)
+          add()
+        }, //第一个生命周期函数---初始化完一个空vue实例，还没有初始化data，methods的等---只有默认的生命周期函数和默认事件
+        created() {
+          console.log(this.msg)
+          this.add()
+        }, //第二个和周期函数，此时，data和methods初始化完成
+        //接下来进入编译模板阶段，判断el，template--option--最终生成一个模板字符串，此时只是在内存中渲染好了模板，没有挂载到页面中
+        beforeMount() {
+          console.log(document.getElementById('app').innerText)
+        }, //第三个生命周期函数，表示模板已经在内存中编辑完成了，但是尚未渲染到页面中.此时页面中的元素还未被真正替换，只是之前的模板
+        mounted() {
+          //操作DOM节点，最早应该在mounted中操作
+          console.log(document.getElementById('app').innerText)
+        }, //第四个生命周期函数，此时用户模板已经渲染到页面中，此时代表实例完全创建，(el来replace模板，create vm.$el and replace "el" with it)
+        //接下来进入运行阶段的周期函数,data改变时触发beforeUpdate--virtual DOM re-render and patch--updated三个阶段
+        beforeUpdate() {
+          console.log(
+            '此时页面上的数据是：' + document.getElementById('app').innerText
+          )
+          console.log('此时data中的数据是：' + this.msg)
+        }, //此时数据更新，页面并没有更新,数据是旧的，data数据是新的
+        updated() {
+          //此时根据内存中的data数据渲染出新的DOM树结构，然后根据新的DOM树，渲染新的页面-----
+          console.log('此时进入了updated周期')
+          console.log(
+            '此时页面上的数据是：' + document.getElementById('app').innerText
+          )
+          console.log('此时data中的数据是：' + this.msg)
+        }
+        //后面的beforeDestroy---这个阶段实例还可以用和destroyed销毁过程，目前没用到
+        //mounted---when vm.$destroy() is called--beforeDestroy--teardown
+      })
+    </script>
+  </body>
+</html>
