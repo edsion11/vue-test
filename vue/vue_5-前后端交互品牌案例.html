@@ -5,16 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>vue</title>
-    <script src="../vue.js"></script>
+    <script src="./vue.js"></script>
     <script src="../node_modules/vue-resource/dist/vue-resource.js"></script>
+    <link
+      rel="stylesheet"
+      href="../node_modules/bootstrap/dist/css/bootstrap.css"
+    />
   </head>
   <body>
-    <div class="body"></div>
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">添加品牌</h3>
+      </div>
+      <div class="panel-body form-inline">
+        <label for="input-id" class="col-sm-2"
+          ><h4>Id:</h4>
+          <input type="text" class="form-control" v-model="id"/></label
+        >&nbsp;&nbsp;&nbsp;
+        <label for="input-id" class="col-sm-2"
+          ><h4>Name:</h4>
+          <input type="text" class="form-control" v-model="name"/></label
+        >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button class="btn btn-primary" @click="add">添加品牌</button>
+      </div>
+    </div>
+
+    <div class="body">
+      <table class="table table-bordered table-hover table-striped">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Ctime</th>
+            <th>Operation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in list" :key="item.id">
+            <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.Ctime}}</td>
+            <td>
+              <button class="btn btn-primary" @click="del(item.id)">
+                删除
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <script>
       let vm = new Vue({
         el: '.body',
-        data: {},
-        methods: {}
+        data: {
+          list: [
+            { id: 1, name: '宝马', Ctime: new Date() },
+            { id: 2, name: '众泰', Ctime: new Date() },
+            { id: 3, name: '小汽车', Ctime: new Date() }
+          ]
+        },
+        methods: {
+          del(id) {
+            this.list.some((item, i) => {
+              if (item.id == id) {
+                this.list.splice(i, 1)
+                return true
+              }
+            })
+          }
+        }
       })
     </script>
   </body>

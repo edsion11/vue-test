@@ -64,7 +64,6 @@
       </div>
       <table class=" table table-bordered table-hover table-striped">
         <thead>
-          //表头
           <tr>
             <th>id</th>
             <th>Name</th>
@@ -87,22 +86,22 @@
     </div>
     <script>
       //全局过滤器，时间格式化
-      Vue.filter("dataformat", function(dateStr, pattern) {
+      Vue.filter('dataformat', function(dateStr, pattern) {
         //根据给定的时间字符串，得到特定的时间
-        var dt = new Date(dateStr);
-        var y = dt.getFullYear();
-        var m = dt.getMonth() + 1;
-        var d = dt.getDate();
-        if (pattern.toUpperCase() === "yyyy-mm-dd") {
-          return `${y}-${m}-${d}`;
+        var dt = new Date(dateStr)
+        var y = dt.getFullYear()
+        var m = dt.getMonth() + 1
+        var d = dt.getDate()
+        if (pattern.toUpperCase() === 'yyyy-mm-dd') {
+          return `${y}-${m}-${d}`
         } else {
-          var hh = dt.getHours();
-          var mm = dt.getMinutes();
-          var ss = dt.getSeconds();
-          return `${y}-${m}-${d} ${hh}:${mm}:${ss}`;
+          var hh = dt.getHours()
+          var mm = dt.getMinutes()
+          var ss = dt.getSeconds()
+          return `${y}-${m}-${d} ${hh}:${mm}:${ss}`
         }
-      });
-      Vue.directive("focus", {
+      })
+      Vue.directive('focus', {
         //钩子函数
         //bind每当指令绑定到元素上的时候，立即执行bind函数，只执行一次.在元素刚绑定了指令的时候，还没有插入到DOM树，这时候没有focus
         //一个元素只有插入到DOM树后，才能获取焦点。
@@ -110,38 +109,38 @@
         //updated当VNode更新的时候，执行updated，可以执行多次
         //每个函数中第一个参数永远是el参数，他表示被绑定了指令的那个元素，这个el参数，是一个原生的js对象
         inserted: function(el) {
-          el.focus();
+          el.focus()
         },
         bind: function() {},
         updated: function() {}
-      });
-      Vue.directive("color", {
+      })
+      Vue.directive('color', {
         bind: function(el, binding) {
           //el,value,expression
           //内联样式，只要指令绑定了元素，不管元素有没有插入到DOM，元素都有一个内联样式
-          el.style.color = binding.value;
+          el.style.color = binding.value
         }
-      });
+      })
       var vm = new Vue({
-        el: "#app",
+        el: '#app',
         data: {
-          id: "",
-          name: "",
-          keywords: "",
+          id: '',
+          name: '',
+          keywords: '',
           list: [
             {
               id: 1,
-              name: "奔驰",
+              name: '奔驰',
               ctime: new Date()
             },
             {
               id: 2,
-              name: "宝马",
+              name: '宝马',
               ctime: new Date()
             },
             {
               id: 3,
-              name: "法拉利",
+              name: '法拉利',
               ctime: new Date()
             }
           ]
@@ -152,16 +151,16 @@
               id: this.id,
               name: this.name,
               ctime: new Date()
-            };
-            this.list.push(car);
+            }
+            this.list.push(car)
           },
           del(id) {
             this.list.some((item, i) => {
               if (item.id == id) {
-                this.list.splice(i, 1);
-                return true;
+                this.list.splice(i, 1)
+                return true
               }
-            });
+            })
           },
           search(keywords) {
             /* 第一种方法-----------------------------------------------
@@ -174,14 +173,14 @@
       return newlist; -------------------------------------------*/
             return this.list.filter(item => {
               if (item.name.includes(keywords)) {
-                return item;
+                return item
               }
-            });
+            })
           }
         }
-      });
+      })
       var vm2 = new Vue({
-        el: "#app2",
+        el: '#app2',
         data: {
           dt: new Date()
         },
@@ -189,35 +188,35 @@
         filters: {
           //定义私有过滤器  -- 过滤器名称和函数  名称相同时，优先调用私有过滤器
           dateformat: function(dateStr, pattern) {
-            var dt = new Date(dateStr);
-            var y = dt.getFullYear();
-            var m = dt.getMonth() + 1;
-            var d = dt.getDate();
-            if (pattern.toUpperCase() === "yyyy-mm-dd") {
-              return `${y}-${m}-${d}`;
+            var dt = new Date(dateStr)
+            var y = dt.getFullYear()
+            var m = dt.getMonth() + 1
+            var d = dt.getDate()
+            if (pattern.toUpperCase() === 'yyyy-mm-dd') {
+              return `${y}-${m}-${d}`
             } else {
-              var hh = dt.getHours();
-              var mm = dt.getMinutes();
+              var hh = dt.getHours()
+              var mm = dt.getMinutes()
               var ss = dt
                 .getSeconds()
                 .toString()
-                .padStart(2, "0"); //padStart添加字符串
-              return `${y}-${m}-${d} ${hh}:${mm}:${ss} ~~~~~~`;
+                .padStart(2, '0') //padStart添加字符串
+              return `${y}-${m}-${d} ${hh}:${mm}:${ss} ~~~~~~`
             }
           }
         },
-        directives: {//定义私有指令
-          'fontweight': {
+        directives: {
+          //定义私有指令
+          fontweight: {
             bind: function(el, binding) {
-              el.style.fontWeight = binding.value;
+              el.style.fontWeight = binding.value
             }
-		  },
-		  'fontsize':function(el,binding){
-              el.style.fontSize = parseInt(binding.value)+'px'
-		  }
-		}
-		
-      });
+          },
+          fontsize: function(el, binding) {
+            el.style.fontSize = parseInt(binding.value) + 'px'
+          }
+        }
+      })
       //---原生js---------------------------------------------
       //document.getElementById('search').focus()
     </script>
