@@ -6,9 +6,14 @@
     <title>Document</title>
   </head>
   <body>
+    <div>
+      <p id="pp"></p>
+    </div>
     <script>
       function showinfo(data) {
         console.log(data)
+        var ss = document.getElementById('pp')
+        ss.innerHTML = data.name
       }
     </script>
     <script src="http://127.0.0.1:5000/getscript?callback=showinfo"></script>
