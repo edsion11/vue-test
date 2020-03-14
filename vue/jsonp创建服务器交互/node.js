@@ -1,5 +1,5 @@
 var http = require('http')
-const urlModule = require('url') //核心模块，帮助我们解析url地址，获得pathname和query
+const urlModule = require('url') //?核心模块，帮助我们解析url地址，获得pathname和query
 var server = http.createServer()
 
 server.on('request', function (request, response) {
@@ -16,6 +16,7 @@ server.on('request', function (request, response) {
       gender: '男孩子'
 
     }
+
     var scriptStr = `${query.callback}(${JSON.stringify(data)})` //模板字符串：``待补充
     //response.end发送给客户端
     response.end(scriptStr)

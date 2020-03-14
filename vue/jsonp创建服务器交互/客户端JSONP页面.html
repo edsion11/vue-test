@@ -13,7 +13,7 @@
       function showinfo(data) {
         console.log(data)
         var ss = document.getElementById('pp')
-        ss.innerHTML = data.name
+        ss.innerHTML = data.name + '今年' + data.age + '是个' + data.gender
       }
     </script>
     <script src="http://127.0.0.1:5000/getscript?callback=showinfo"></script>
