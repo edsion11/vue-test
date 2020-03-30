@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="./vue.js"></script>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link
+      href="../node_modules/bootstrap/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <title>vue</title>
+  </head>
+  <body>
+    <div class="body">
+      <my-component></my-component>
+      <my-component></my-component>
+      <my-component></my-component><br />
+      <input type="text" v-model="parentMessage" />
+      <props :message="parentMessage"></props>
+      <com message="[123]"></com
+      ><!-- 不加v-bind的后果，此时传递的是message的值"[123]"5个字节 -->
+      <com :message="[1,2,3]"></com
+      ><!-- 正常显示message -->
+    </div>
+    <script>
+      /*       var data = {
+        count: 0
+      } */
+      /* 引用外部/内部数据 */
+      Vue.component('my-component', {
+        template:
+          '<button @click="count++" class=" btn btn-success">{{count}}</button>',
+        data: function() {
+          return {
+            count: 0
+          }
+        }
+      })
+      /* props动态传递父级数据 */
+      Vue.component('props', {
+        props: ['message'],
+        template: '<div>{{message}}</div>'
+      })
+      Vue.component('com', {
+        props: ['message'],
+        template: '<p>{{"我显示的是message.length:---"}}{{message.length}}</p>'
+      })
+      let vm = new Vue({
+        el: '.body',
+        data: {
+          parentMessage: ''
+        },
+        methods: {}
+      })
+    </script>
+  </body>
+</html>

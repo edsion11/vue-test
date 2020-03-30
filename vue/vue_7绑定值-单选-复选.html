@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="../node_modules/bootstrap/dist/css/bootstrap.css"></script>
+    <script src="./vue.js"></script>
+    <title>vue</title>
+  </head>
+  <body>
+    <div class="body">
+      <div>
+        <label
+          ><input
+            type="checkbox"
+            v-model="toggle"
+            :true-value="value1"
+            :false-value="value2"
+            id="check1"
+          />复选框</label
+        >
+        <p>{{"我是toggle"}} : {{toggle}}</p>
+        <p>{{"我是value1"}} {{value1}}</p>
+        <p>{{"我是value2"}}{{value2}}</p>
+      </div>
+      <select v-model="selected">
+        <option :value="{number:123}">123</option>
+      </select>
+      <p>{{selected.number}}</p>
+    </div>
+    <script>
+      let vm = new Vue({
+        el: '.body',
+        data: {
+          toggle: false,
+          value1: '我是一个true',
+          value2: '我是一个false',
+          selected: ''
+        },
+        methods: {}
+      })
+    </script>
+  </body>
+</html>
