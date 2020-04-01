@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="./vue.js"></script>
+    <title>vue</title>
+  </head>
+  <body>
+    <div class="body">
+      {{message}}
+      <!-- 非父组件通信 -->
+      <!-- 首先创建一个名为bus的空实例，里面无任何内容，然后全局定义了组件<my-component>,最后创建实例app，在app初始化时，就是Vue的生命周期mounted时，监听来自bus的事件
+        on-message，在组件my-component中的button通过handleEvent点击事件回吧on-message发出去 -->
+      <my-component></my-component>
+      <!-- 子组件索引 -->
+      <!-- 子组件较多时，this.$children来一一遍历比较困难，尤其是组件动态悬渲染，组件序列不固定，此时用ref来为组件指定一个索引 -->
+      <button @click="handleRef">通过ref获取子组件实例</button>
+      <child-component ref="comA"></child-component>
+    </div>
+    <script>
+      var bus = new Vue({})
+      Vue.component('my-component', {
+        template: '<button @click="handleEvent">传递事件</button>',
+        methods: {
+          handleEvent: function() {
+            bus.$emit('on-message', '来自组件my-component的内容')
+          }
+        }
+      })
+      Vue.component('child-component', {
+        template: '<input v-model="message">',
+        data() {
+          return {
+            message: '子组件中的message'
+          }
+        }
+      })
+      let vm = new Vue({
+        el: '.body',
+        data: {
+          message: ''
+        },
+        methods: {
+          handleRef: function() {
+            //通过refs访问实例
+            //$refs只在组件渲染完成后有填充，并且它是非响应式的，它仅仅作为一个直接访问子组件的应急方案，应当避免在末班或计算属性中使用refs
+            var msg = this.$refs.comA.message
+            console.log(msg)
+          }
+        },
+        mounted: function() {
+          var _this = this
+          bus.$on('on-message', function(msg) {
+            _this.message = msg
+          })
+        }
+      })
+    </script>
+  </body>
+</html>

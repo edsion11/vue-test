@@ -24,6 +24,9 @@
       ><!-- 不加v-bind的后果，此时传递的是message的值"[123]"5个字节 -->
       <com :message="[1,2,3]"></com
       ><!-- 正常显示message -->
+      <!-- 子组件向父组件通信$emit -->
+      <div>{{total}}</div>
+      <count @increase="handleGetTotal" @reduce="handleGetTotal"></count>
     </div>
     <script>
       /*       var data = {
@@ -48,12 +51,42 @@
         props: ['message'],
         template: '<p>{{"我显示的是message.length:---"}}{{message.length}}</p>'
       })
+      /* -------------------------------------------------------------- */
+      /* 组件通信：$emit */
+      Vue.component('count', {
+        template:
+          '\
+        <div>\
+        <button @click="handleIncrease" class="btn btn-dark">+1</button>\
+          <button @click="handleReduce" class="btn btn-info">-1</button>\
+          </div>',
+        data() {
+          return {
+            counter: 0
+          }
+        },
+        methods: {
+          handleIncrease: function() {
+            this.counter++
+            this.$emit('increase', this.counter)
+          },
+          handleReduce: function() {
+            this.counter--
+            this.$emit('reduce', this.counter)
+          }
+        }
+      })
       let vm = new Vue({
         el: '.body',
         data: {
-          parentMessage: ''
+          parentMessage: '',
+          total: 0
         },
-        methods: {}
+        methods: {
+          handleGetTotal: function(total) {
+            this.total = total
+          }
+        }
       })
     </script>
   </body>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="../vue.js"></script>
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link
+      rel="stylesheet"
+      href="../../node_modules/bootstrap/dist/css/bootstrap.css"
+      type="text/css"
+    />
+    <title>标签页组件</title>
+  </head>
+  <body>
+    <div class="body" v-cloak>
+      <tabs v-model="activeKey">
+        <pane label="标签一" name="1">标签一的内容</pane>
+        <pane label="标签二" name="2">标签二的内容</pane>
+        <pane label="标签三" name="3">标签三的内容</pane>
+      </tabs>
+    </div>
+    <script src="tabs.js"></script>
+    <script src="pane.js"></script>
+    <script>
+      let vm = new Vue({
+        el: '.body',
+        data: {
+          activeKey: '1'
+        },
+        methods: {}
+      })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="./vue.js"></script>
+    <title>vue</title>
+  </head>
+  <body>
+    <div class="body">
+      <child>
+        <!--         <p>分发的内容</p>
+        <p>更多分发的内容</p> -->
+      </child>
+      <my-list :books="books">
+        <!-- 作用于插槽可以是具名的slot -->
+        <template slot="book" scope="props">
+          <li>{{props.bookName}}</li>
+        </template>
+      </my-list>
+      <!-- 点击事件实现一个动态组件 -->
+      <component :is="currentView"></component>
+      <button @click="handleChangeView('A')">切换到A</button>
+      <button @click="handleChangeView('B')">切换到B</button>
+      <button @click="handleChangeView('C')">切换到C</button>
+    </div>
+    <script>
+      Vue.component('my-list', {
+        props: {
+          books: {
+            type: Array,
+            default: function() {
+              return []
+            }
+          }
+        },
+        template:
+          '\
+        <ul>\
+          <slot name="book" v-for="book in books" :bookName=book.name>\
+          </slot>\
+        </ul>'
+      })
+      Vue.component('child', {
+        template:
+          '\
+        <div>\
+          <slot>\
+            <p>如果父组件没有插入内容，我就出现</p>\
+          </slot>\
+        </div>'
+      })
+      let vm = new Vue({
+        el: '.body',
+        data: {
+          books: [{ name: '一本书' }, { name: '两本书' }, { name: '三本书' }],
+          currentView: 'comA'
+        },
+        components: {
+          comA: {
+            template: '<div>组件A</div>'
+          },
+          comB: {
+            template: '<div>组件B</div>'
+          },
+          comC: {
+            template: '<div>组件C</div>'
+          }
+        },
+        methods: {
+          handleChangeView(point) {
+            this.currentView = 'com' + point
+          }
+        }
+      })
+    </script>
+  </body>
+</html>
