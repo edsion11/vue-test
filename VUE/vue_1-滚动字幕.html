@@ -41,9 +41,9 @@
 				methods:{
 					lang(){
 						this.intervalId=setInterval(()=>{
-							var start=this.msg.substring(0,1)
-							var end=this.msg.substring(1)
-							this.msg= end + start
+							var start=this.msg.substring(0,1)//剪切掉第一个字符
+							var end=this.msg.substring(1)//获取剩下的字符
+							this.msg= end + start//拼接
 						},40)
 					},
 					stop(){
