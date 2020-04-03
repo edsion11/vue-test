@@ -4,36 +4,36 @@ Vue.component('pane', {
   <div class="pane" v-show="show">\
   <slot></slot>\
   </div>',
-  data: function() {
+  data: function () {
     return {
-      show: true
+      show: false,
     }
   },
   props: {
     name: {
-      type: String
+      type: String,
     },
     label: {
       type: String,
-      default: ''
+      default: '',
     },
-    data: function() {
+    data: function () {
       return {
-        show: true
+        show: true,
       }
-    }
+    },
   },
   methods: {
     updateNav() {
       this.$parent.updateNav()
-    }
+    },
   },
   watch: {
     label() {
       this.updateNav()
-    }
+    },
   },
   mounted() {
     this.updateNav()
-  }
+  },
 })

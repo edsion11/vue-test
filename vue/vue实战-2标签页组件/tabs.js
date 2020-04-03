@@ -9,6 +9,7 @@ Vue.component('tabs', {
        @click="handleChange(index)">\
        {{item.label}}\
        </div>\
+       <button class="btn btn-dark" @click="add">添加</button>\
       </div>\
   <div class="tabs-content">\
   <slot></slot>\
@@ -16,25 +17,50 @@ Vue.component('tabs', {
   </div>',
   props: {
     value: {
-      type: [String, Number]
-    }
+      type: [String, Number],
+    },
   },
-  data: function() {
+  data: function () {
     return {
       navList: [],
-      currentValue: this.value
+      currentValue: this.value,
+      num: 3,
+      arr: [
+        '',
+        '',
+        '',
+        '',
+        '五',
+        '六',
+        '七',
+        '八',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+      ],
     }
   },
   methods: {
-    tabCls: function(item) {
+    add: function () {
+      this.navList.push({
+        name: this.num++,
+        label: '标签' + this.arr[this.num],
+      })
+    },
+    tabCls: function (item) {
       return [
         'tabs-tab',
         {
-          'tabs-tab-active': item.name === this.currentValue
-        }
+          'tabs-tab-active': item.name === this.currentValue,
+        },
       ]
     },
-    handleChange: function(index) {
+    handleChange: function (index) {
       var nav = this.navList[index]
       var name = nav.name
       /* 改变当前的tab，触发下面的watch */
@@ -44,17 +70,17 @@ Vue.component('tabs', {
       this.$emit('on-click', name)
     },
     getTabs() {
-      return this.$children.filter(function(item) {
+      return this.$children.filter(function (item) {
         return item.$options.name === 'pane'
       })
     },
     updateNav() {
       this.navList = []
       var _this = this
-      this.getTabs().forEach(function(pane, index) {
+      this.getTabs().forEach(function (pane, index) {
         _this.navList.push({
           label: pane.label,
-          name: pane.name || index
+          name: pane.name || index,
         })
         if (!pane.name) {
           pane.name = index
@@ -70,17 +96,17 @@ Vue.component('tabs', {
     updateStatus() {
       var tabs = this.getTabs()
       var _this = this
-      tabs.forEach(function(tab) {
+      tabs.forEach(function (tab) {
         return (tab.show = tab.name === _this.currentValue)
       })
-    }
+    },
   },
   watch: {
-    value: function(val) {
+    value: function (val) {
       this.currentValue = val
     },
-    currentValue: function() {
+    currentValue: function () {
       this.updateStatus()
-    }
-  }
+    },
+  },
 })
