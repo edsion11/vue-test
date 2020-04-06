@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      href="../../node_modules/bootstrap/dist/css/bootstrap.css"
+      rel="stylesheet"
+    />
+    <script src="../vue.js"></script>
+    <title>vue</title>
+  </head>
+  <body>
+    <div class="body">
+      <coma @parent="refresh"></coma>
+      <comment ref="childC"></comment>
+    </div>
+    <template id="git-talk">
+      <ul class="list-group">
+        <li class="list-group-item" v-for="item in list">
+          <span class="badge">用户:{{item.user}}</span>
+          <span class="badge">{{item.id}}</span>
+          {{item.content}}
+        </li>
+      </ul>
+    </template>
+    <template id="head">
+      <div>
+        <div class="form-group">
+          <span class="form-group-addon" id="basic-addon1">用户:</span>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Username"
+            aria-describedby="basic-addon1"
+            v-model="username"
+          />
+        </div>
+        <div class="form-group">
+          <label>内容:</label>
+          <input type="text" value="" class="form-control" v-model="content" />
+        </div>
+        <div class="form-group">
+          <button class="btn btn-primary" @click="postComment">提交</button>
+        </div>
+      </div>
+    </template>
+    <script>
+      var bus = new Vue()
+      Vue.component('coma', {
+        template: '#head',
+        data() {
+          return {
+            username: '',
+            content: '',
+          }
+        },
+        methods: {
+          //分析,首先是数据保存在哪里？？----存放到localStorage中-----localStorage.setItem;
+          /*1.先组织出一个最新的评论对象；
+          2.将组织出的评论对象保存到localStorage中;
+          localStorage只能存放字符串数据，先调用JSON。stringify,在保存最新的评论之前，先从localStorage获取之前的评论数据(String)
+          然后转换为数组对象，再把最新的评论push()到这个数组之中
+          如果获取到localStorage中的评论字符串,为空则不存在，返回一个[]，用JSON.parse('[]')转换，
+          最后把最新的评论数组再次调用JSON.stringify,转换为数组字符串再调用localStorage.setItem.
+          */
+          postComment: function () {
+            if (this.username != '' && this.comment != '') {
+              var comment = {
+                id:
+                  new Date().getFullYear() +
+                  ' ' +
+                  new Date().getMonth() +
+                  ' ' +
+                  new Date().getDay() +
+                  ' ' +
+                  new Date().getHours() +
+                  ':' +
+                  new Date().getMinutes() +
+                  ':' +
+                  new Date().getSeconds(),
+                user: this.username,
+                content: this.content,
+              }
+              //从localStorage中获取所有的评论
+              var list = JSON.parse(localStorage.getItem('head') || '[]')
+              list.unshift(comment)
+              localStorage.setItem('head', JSON.stringify(list))
+              this.username = this.content = ''
+              this.$emit('parent')
+            }
+          },
+        },
+      })
+      Vue.component('comment', {
+        template: '#git-talk',
+        data() {
+          return {
+            list: [
+              {
+                id:
+                  new Date().getFullYear() +
+                  '/' +
+                  new Date().getMonth() +
+                  '/' +
+                  new Date().getDay() +
+                  '/' +
+                  new Date().getHours() +
+                  ':' +
+                  new Date().getMinutes() +
+                  ':' +
+                  new Date().getSeconds(),
+                user: '吴亦凡',
+                content: '我是吴亦凡',
+              },
+              {
+                id:
+                  new Date().getFullYear() +
+                  '/' +
+                  new Date().getMonth() +
+                  '/' +
+                  new Date().getDay() +
+                  '/' +
+                  new Date().getHours() +
+                  ':' +
+                  new Date().getMinutes() +
+                  ':' +
+                  new Date().getSeconds(),
+                user: '我是蔡',
+                content: '我是蔡',
+              },
+              {
+                id:
+                  new Date().getFullYear() +
+                  '/' +
+                  new Date().getMonth() +
+                  '/' +
+                  new Date().getDay() +
+                  '/' +
+                  new Date().getHours() +
+                  ':' +
+                  new Date().getMinutes() +
+                  ':' +
+                  new Date().getSeconds(),
+                user: '我是徐',
+                content: '我是徐',
+              },
+              {
+                id:
+                  new Date().getFullYear() +
+                  '/' +
+                  new Date().getMonth() +
+                  '/' +
+                  new Date().getDay() +
+                  '/' +
+                  new Date().getHours() +
+                  ':' +
+                  new Date().getMinutes() +
+                  ':' +
+                  new Date().getSeconds(),
+                user: '我是坤',
+                content: '我是坤',
+              },
+              {
+                id:
+                  new Date().getFullYear() +
+                  '/' +
+                  new Date().getMonth() +
+                  '/' +
+                  new Date().getDay() +
+                  '/' +
+                  new Date().getHours() +
+                  ':' +
+                  new Date().getMinutes() +
+                  ':' +
+                  new Date().getSeconds(),
+                user: '我是阿坤',
+                content: '我是阿坤',
+              },
+            ],
+          }
+        },
+        created() {
+          this.load()
+        },
+        methods: {
+          load() {
+            var list = JSON.parse(localStorage.getItem('head') || '[]')
+            if (list.length < 1) {
+              this.list = this.list
+            } else {
+              this.list = this.list.concat(list[0])
+            }
+          },
+        },
+        mounted() {},
+      })
+
+      let vm = new Vue({
+        el: '.body',
+        data: {},
+        methods: {
+          refresh() {
+            setTimeout(() => {
+              this.$refs.childC.load()
+            }, 5)
+          },
+        },
+      })
+    </script>
+  </body>
+</html>

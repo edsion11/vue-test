@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="../vue.js"></script>
+    <title>vue</title>
+  </head>
+  <body>
+    <div class="body">
+      <input type="button" value="父组件的button" @click="parent" />
+      <child ref="chl"></child>
+    </div>
+    <template id="child1">
+      <button @click="load">子组件</button>
+    </template>
+    <script>
+      var bus = new Vue()
+      Vue.component('child', {
+        template: '#child1',
+        data() {
+          return {
+            msg: '我是子组件',
+          }
+        },
+        methods: {
+          load() {
+            console.log(this.msg)
+          },
+        },
+      })
+      let vm = new Vue({
+        el: '.body',
+        data: {},
+        methods: {
+          parent() {
+            this.$refs.chl.load()
+          },
+        },
+      })
+    </script>
+  </body>
+</html>
